@@ -44,9 +44,9 @@
                     <router-link to="About" class="text-blue-500 hover:underline">Read more</router-link>
                 </div>
                 <div class="bg-white shadow-lg rounded-lg p-4">
-                    <img src="/sound4.jpeg" alt="sound person image from open source" class="w-full h-96 object-contain rounded-t-lg">
+                    <img src="/sound-cartoon1.jpeg" alt="sound person image from open source" class="w-full h-96 object-contain rounded-t-lg">
                     <h3 class="text-lg font-bold mt-2">A Fun NYC Sound Guy Page</h3>
-                    <p class="text-gray-600 text-sm">Find Out What NYC Sound Guy is All About</p>
+                    <p class="text-gray-600 text-sm">Checkout out our page dedicated to FUN!</p>
                     <router-link to="Fun" class="text-blue-500 hover:underline">Read more</router-link>
                 </div>
             </div>
