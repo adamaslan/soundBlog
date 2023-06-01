@@ -6,6 +6,8 @@ import Zaxcom from "../views/Zaxcom.vue";
 import SoundDevices from "../views/SoundDevices.vue";
 import Ktek from "../views/Ktek.vue";
 import Contact from "../views/Contact.vue";
+import Fun from "../views/Fun.vue";
+
 
 const routes = [
     {
@@ -36,6 +38,11 @@ const routes = [
         path: '/ktek',
         name: "Ktek",
         component: Ktek,
+    },
+    {
+        path: '/fun',
+        name: "Fun",
+        component: Fun,
     },
     {
         path: '/:catchAll(.*)*',
