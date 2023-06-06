@@ -46,7 +46,7 @@ export default {
         text.font = '/utopia_seriff.ttf'
         text.fontSize = 0.2
         text.position.z = -2
-        text.position.x = -1.5
+        text.position.x = -1
 
         text.color = 0x9966FF
         // use a depth material to make the font more 3D
