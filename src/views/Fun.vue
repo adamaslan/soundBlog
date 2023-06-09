@@ -9,6 +9,8 @@ import * as THREE from 'three'
 import { Text } from 'troika-three-text'
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader'
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry'
+// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+
 
 
 export default {
@@ -23,6 +25,10 @@ export default {
         light.position.set(0, 0, 1)
         scene.add(light)
 
+// Controls
+//       const controls = new OrbitControls(camera)
+//       controls.enableDamping = true
+
         // create a fontLoader instance and load a custom font
         const fontLoader = new FontLoader()
 
@@ -32,6 +38,14 @@ export default {
                 // create a textGeometry instance using the custom font
                 const textGeometry = new TextGeometry('Font Loaded', {
                     font: font,
+                  size: 0.5,
+                  height: 0.2,
+                  curveSegments: 12,
+                  bevelEnabled: true,
+                  bevelThickness: 0.03,
+                  bevelSize: 0.02,
+                  bevelOffset: 0,
+                  bevelSegments: 5
                 })
                 // create a mesh using the textGeometry and a material
                 const textMesh = new THREE.Mesh(textGeometry, new THREE.MeshBasicMaterial())
