@@ -7,6 +7,7 @@ import SoundDevices from "../views/SoundDevices.vue";
 import Ktek from "../views/Ktek.vue";
 import Contact from "../views/Contact.vue";
 import Fun from "../views/Fun.vue";
+import Fun2 from "../views/Fun2.vue";
 
 
 const routes = [
@@ -43,6 +44,11 @@ const routes = [
         path: '/fun',
         name: "Fun",
         component: Fun,
+    },
+    {
+        path: '/fun2',
+        name: "Fun2",
+        component: Fun2,
     },
     {
         path: '/:catchAll(.*)*',
