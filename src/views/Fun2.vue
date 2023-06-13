@@ -1,131 +1,309 @@
 <template>
-  <div id="three-container"></div>
+  <div class="divCenter pt-20">
+    <!-- <div id="loading" class="divCenter w-full mt-[15rem] animate-spin"></div> -->
+    <div
+        id="threejs-container"
+        class=""
+        :style="
+        windowWidth < 1280
+          ? null
+          : {
+              'padding-left': paddingValue - 50 + 'px',
+              'padding-right': paddingValue - 50 + 'px'
+            }
+      "
+    />
+  </div>
 </template>
 
 <script>
-import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+/* eslint-disable */
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+// import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 
-import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js'
-import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js'
-import typefaceFont from '/helvetiker_regular.typeface.json'
-
-/**
-* Base
-*/
+/* eslint-enable */
+export default {
 
 
-// Canvas
-const canvas = document.querySelector('canvas.webgl')
 
-// Scene
-const scene = new THREE.Scene()
+  mounted() {
+    let isInDesktop = window.innerWidth > 1148;
+    const userPlatform = (platform) => {
+      return platform ? 5 : 3;
+    };
 
-/**
-* Textures
-*/
-const textureLoader = new THREE.TextureLoader()
-const matcapTexture = textureLoader.load('/7.png')
+    //const scene = new THREE.Scene();
+    // const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+    const camera = new THREE.PerspectiveCamera(75, 2, 0.1, 1000);
+    camera.position.x = 30;
+    camera.position.y = 20;
+    camera.position.z = 30;
 
-/**
-* Fonts
-*/
-const fontLoader = new FontLoader()
+    //loader
+    // const dracoLoader = new DRACOLoader();
+    // dracoLoader.setDecoderPath( 'js/libs/draco/gltf/' );
 
-fontLoader.load(
-'/helvetiker_regular.typeface.json',
-(font) =>
-{
-// Material
-const material = new THREE.MeshMatcapMaterial({ matcap: matcapTexture })
+    const loader = new GLTFLoader();
+    // loader.setDRACOLoader( dracoLoader );
+    loader.load(
+        '/boompole.glb',
+        function (gltf) {
+          // loader.load( './src/assets/room/scene.gltf', function ( gltf ) {
+          const model = gltf.scene;
 
-// Text
-const textGeometry = new TextGeometry(
-'Hello Three.js',
-{
-font: font,
-size: 0.5,
-height: 0.2,
-curveSegments: 12,
-bevelEnabled: true,
-bevelThickness: 0.03,
-bevelSize: 0.02,
-bevelOffset: 0,
-bevelSegments: 5
-}
-)
-textGeometry.center()
+          // position the model from the camera
+          model.position.set(0, 0, 6);
+          model.scale.set(
+              userPlatform(isInDesktop),
+              userPlatform(isInDesktop),
+              userPlatform(isInDesktop)
+          ); //model size
+          model.castShadow = true;
+          scene.add(model);
+        },
+        undefined,
+        function (error) {
+          // console.error(error);
+          // comment this for debugging
+          this.$router.push('notfound');
+        }
+    );
 
-const text = new THREE.Mesh(textGeometry, material)
-scene.add(text)
+    // const renderer = new THREE.WebGLRenderer();
+    // renderer.setSize( window.innerWidth, window.innerHeight );
 
-}
-)
+    // add to HTML viewer
+    // const container = document.body;
+    const container = document.getElementById('threejs-container');
+    //container.appendChild( renderer.domElement ); // may need to change to append this on the right element
 
-/**
-* Sizes
-*/
-const sizes = {
-width: window.innerWidth,
-height: window.innerHeight
-}
+    // three js renderer and size on the element
+    const renderer = new THREE.WebGLRenderer(
+        { antialias: true },
+        { alpha: true }
+    );
+    renderer.setPixelRatio(window.devicePixelRatio);
+    // renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.setSize(450, 450 / 2); // size
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    container.appendChild(renderer.domElement);
+    renderer.setClearColor(0x000000, 0); // set transparent bg
 
-window.addEventListener('resize', () =>
-{
-// Update sizes
-sizes.width = window.innerWidth
-sizes.height = window.innerHeight
+    // attempt to add sadows
+    const pmremGenerator = new THREE.PMREMGenerator(renderer);
 
-// Update camera
-camera.aspect = sizes.width / sizes.height
-camera.updateProjectionMatrix()
+    const scene = new THREE.Scene();
+    // scene.background = new THREE.Color( 0xbfe3dd );
+    scene.environment = pmremGenerator.fromScene(
+        new RoomEnvironment(),
+        1
+    ).texture;
 
-// Update renderer
-renderer.setSize(sizes.width, sizes.height)
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-})
+    // lightning and casting shadows
+    const light = new THREE.DirectionalLight(0x404040, 1); // soft white light
+    light.position.set(15, 20, 0);
+    light.target.position.set(0, 0, 0);
+    light.castShadow = true;
 
-/**
-* Camera
-*/
-// Base camera
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.x = 1
-camera.position.y = 1
-camera.position.z = 2
-scene.add(camera)
+    light.shadow.mapSize.width = 512; // default
+    light.shadow.mapSize.height = 512; // default
+    // light.shadowCameraLeft = -30;
+    // light.shadowCameraRight = 30;
+    // light.shadowCameraTop = 35;
+    // light.shadowCameraBottom = -30;
+    scene.add(light);
+    scene.add(light.target);
 
-// Controls
-const controls = new OrbitControls(camera, canvas)
-controls.enableDamping = true
+    // helpers
+    const controls = new OrbitControls(camera, renderer.domElement); // allow users to view around the model
+    // controls.enablePan = false;
+    controls.enableDamping = true; // adds a physic effect of "inertia" when spinning camera
+    controls.maxPolarAngle = Math.PI / 2 - 0.3; // don't let user view below the ground, 0.3 is slightly above the base level
+    controls.minDistance = 10; // don't let user zoom too close
+    controls.maxDistance = 50; // don't let user zoom too far away
 
-/**
-* Renderer
-*/
-const renderer = new THREE.WebGLRenderer({
-canvas: canvas
-})
-renderer.setSize(sizes.width, sizes.height)
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    controls.enableRotate = true;
+    controls.rotateSpeed = 0.3; // set rotation speed of the mouse
 
-/**
-* Animate
-*/
-const clock = new THREE.Clock()
+    controls.autoRotate = true; // auto rotate
+    controls.autoRotateSpeed = 1.5; // 30 seconds per orbit when fps is 60
 
-const tick = () =>
-{
-const elapsedTime = clock.getElapsedTime()
+    // grid helper
+    const gridHelper = new THREE.GridHelper(200, 50); // add a grid
+    // light helper
+    const helper = new THREE.DirectionalLightHelper(light, 5);
+    // scene.add( gridHelper );
+    // scene.add( helper );
 
-// Update controls
-controls.update()
+    const animate = () => {
+      requestAnimationFrame(animate);
 
-// Render
-renderer.render(scene, camera)
+      // cube.rotation.x += 0.01;
 
-// Call tick again on the next frame
-window.requestAnimationFrame(tick)
-}
+      const width = window.innerWidth / 2;
+      const height = window.innerHeight / 2;
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
 
-tick()
+      controls.update();
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    // setup loading page
+    // document.onreadystatechange = function () {
+    // 	var state = document.readyState
+    // 	if (state == 'interactive') {
+    // 		document.getElementById('threejsContainer').classList.add(hidden);
+    // 	}
+    // 	else if (state == 'complete') {
+    // 		setTimeout(function(){
+    // 			// document.getElementById('interactive');
+    // 			document.getElementById('loading').classList.add('hidden');
+    // 			document.getElementById('threejsContainer').classList.remove('hidden');
+    // 		},
+    // 		50);
+    // 	}
+    // };
+  }
+};
 </script>
+
+
+<!--<template>-->
+<!--  <div id="three-container"></div>-->
+<!--</template>-->
+
+<!--<script>-->
+<!--import * as THREE from 'three'-->
+<!--// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'-->
+
+<!--import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js'-->
+<!--import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js'-->
+<!--// import typefaceFont from '/helvetiker_regular.typeface.json'-->
+
+<!--/**-->
+<!--* Base-->
+<!--*/-->
+
+
+<!--// Canvas-->
+<!--const canvas = document.querySelector('canvas.webgl')-->
+
+<!--// Scene-->
+<!--const scene = new THREE.Scene()-->
+
+<!--/**-->
+<!--* Textures-->
+<!--*/-->
+<!--const textureLoader = new THREE.TextureLoader()-->
+<!--const matcapTexture = textureLoader.load('/7.png')-->
+
+<!--/**-->
+<!--* Fonts-->
+<!--*/-->
+<!--const fontLoader = new FontLoader()-->
+
+<!--fontLoader.load(-->
+<!--'/helvetiker_regular.typeface.json',-->
+<!--(font) =>-->
+<!--{-->
+<!--// Material-->
+<!--const material = new THREE.MeshMatcapMaterial({ matcap: matcapTexture })-->
+
+<!--// Text-->
+<!--const textGeometry = new TextGeometry(-->
+<!--'Hello Three.js',-->
+<!--{-->
+<!--font: font,-->
+<!--size: 0.5,-->
+<!--height: 0.2,-->
+<!--curveSegments: 12,-->
+<!--bevelEnabled: true,-->
+<!--bevelThickness: 0.03,-->
+<!--bevelSize: 0.02,-->
+<!--bevelOffset: 0,-->
+<!--bevelSegments: 5-->
+<!--}-->
+<!--)-->
+<!--textGeometry.center()-->
+
+<!--const text = new THREE.Mesh(textGeometry, material)-->
+<!--scene.add(text)-->
+
+<!--}-->
+<!--)-->
+
+<!--/**-->
+<!--* Sizes-->
+<!--*/-->
+<!--const sizes = {-->
+<!--width: window.innerWidth,-->
+<!--height: window.innerHeight-->
+<!--}-->
+
+<!--window.addEventListener('resize', () =>-->
+<!--{-->
+<!--// Update sizes-->
+<!--sizes.width = window.innerWidth-->
+<!--sizes.height = window.innerHeight-->
+
+<!--// Update camera-->
+<!--camera.aspect = sizes.width / sizes.height-->
+<!--camera.updateProjectionMatrix()-->
+
+<!--// Update renderer-->
+<!--renderer.setSize(sizes.width, sizes.height)-->
+<!--renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))-->
+<!--})-->
+
+<!--/**-->
+<!--* Camera-->
+<!--*/-->
+<!--// Base camera-->
+<!--const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)-->
+<!--camera.position.x = 1-->
+<!--camera.position.y = 1-->
+<!--camera.position.z = 2-->
+<!--scene.add(camera)-->
+
+<!--// Controls-->
+<!--// const controls = new OrbitControls(camera, canvas)-->
+<!--// controls.enableDamping = true-->
+
+<!--/**-->
+<!--* Renderer-->
+<!--*/-->
+<!--const renderer = new THREE.WebGLRenderer({-->
+<!--canvas: canvas-->
+<!--})-->
+<!--renderer.setSize(sizes.width, sizes.height)-->
+<!--renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))-->
+
+<!--/**-->
+<!--* Animate-->
+<!--*/-->
+<!--const clock = new THREE.Clock()-->
+
+<!--const tick = () =>-->
+<!--{-->
+<!--const elapsedTime = clock.getElapsedTime()-->
+
+<!--// Update controls-->
+<!--controls.update()-->
+
+<!--// Render-->
+<!--renderer.render(scene, camera)-->
+
+<!--// Call tick again on the next frame-->
+<!--window.requestAnimationFrame(tick)-->
+<!--}-->
+
+<!--tick()-->
+<!--</script>-->
