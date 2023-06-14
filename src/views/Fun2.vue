@@ -1,18 +1,18 @@
 <template>
-  <div class="divCenter pt-20">
+  <div >
+<!--    div class="divCenter pt-20"-->
     <!-- <div id="loading" class="divCenter w-full mt-[15rem] animate-spin"></div> -->
-    <div
-        id="threejs-container"
-        class=""
-        :style="
-        windowWidth < 1280
-          ? null
-          : {
-              'padding-left': paddingValue - 50 + 'px',
-              'padding-right': paddingValue - 50 + 'px'
-            }
-      "
-    />
+    <div id="three-container">
+<!--        class=""-->
+<!--        :style="-->
+<!--        windowWidth < 1280-->
+<!--          ? null-->
+<!--          : {-->
+<!--              'padding-left': paddingValue - 50 + 'px',-->
+<!--              'padding-right': paddingValue - 50 + 'px'-->
+<!--            }-->
+<!--      "-->
+     </div>
   </div>
 </template>
 
@@ -30,17 +30,28 @@ export default {
 
 
   mounted() {
-    let isInDesktop = window.innerWidth > 1148;
-    const userPlatform = (platform) => {
-      return platform ? 5 : 3;
-    };
+    const scene = new THREE.Scene()
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
+    const renderer = new THREE.WebGLRenderer()
+    renderer.setSize(window.innerWidth, window.innerHeight)
+    document.getElementById('three-container').appendChild(renderer.domElement)
+    const light = new THREE.DirectionalLight(0xffffff, 1)
+    light.position.set(0, 0, 1)
+    scene.add(light)
+    // let isInDesktop = window.innerWidth > 1148;
+    // const userPlatform = (platform) => {
+    //   return platform ? 5 : 3;
+    // };
 
     //const scene = new THREE.Scene();
     // const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-    const camera = new THREE.PerspectiveCamera(75, 2, 0.1, 1000);
-    camera.position.x = 30;
-    camera.position.y = 20;
-    camera.position.z = 30;
+    // const camera = new THREE.PerspectiveCamera(75, 2, 0.1, 1000);
+    // camera.position.x = 30;
+    // camera.position.y = 20;
+    // camera.position.z = 30;
+    // const light = new THREE.DirectionalLight(0xffffff, 1)
+    // light.position.set(0, 0, 1)
+    // scene.add(light)
 
     //loader
     // const dracoLoader = new DRACOLoader();
@@ -56,11 +67,11 @@ export default {
 
           // position the model from the camera
           model.position.set(0, 0, 6);
-          model.scale.set(
-              userPlatform(isInDesktop),
-              userPlatform(isInDesktop),
-              userPlatform(isInDesktop)
-          ); //model size
+          // model.scale.set(
+          //     userPlatform(isInDesktop),
+          //     userPlatform(isInDesktop),
+          //     userPlatform(isInDesktop)
+          // ); //model size
           model.castShadow = true;
           scene.add(model);
         },
@@ -77,47 +88,48 @@ export default {
 
     // add to HTML viewer
     // const container = document.body;
-    const container = document.getElementById('threejs-container');
+     const container = document.getElementById('threejs-container');
     //container.appendChild( renderer.domElement ); // may need to change to append this on the right element
 
     // three js renderer and size on the element
-    const renderer = new THREE.WebGLRenderer(
-        { antialias: true },
-        { alpha: true }
-    );
-    renderer.setPixelRatio(window.devicePixelRatio);
+    // const renderer = new THREE.WebGLRenderer({
+    //   antialias: true,
+    //   alpha: true
+    // });
+    // renderer.setSize(window.innerWidth, window.innerHeight)
+    // renderer.setPixelRatio(window.devicePixelRatio);
     // renderer.setSize( window.innerWidth, window.innerHeight );
-    renderer.outputEncoding = THREE.sRGBEncoding;
-    renderer.setSize(450, 450 / 2); // size
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    container.appendChild(renderer.domElement);
-    renderer.setClearColor(0x000000, 0); // set transparent bg
+    // renderer.outputEncoding = THREE.sRGBEncoding;
+    // renderer.setSize(450, 450 / 2); // size
+    // renderer.shadowMap.enabled = true;
+    // renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    // container.appendChild(renderer.domElement);
+    // renderer.setClearColor(0x000000, 0); // set transparent bg
 
-    // attempt to add sadows
-    const pmremGenerator = new THREE.PMREMGenerator(renderer);
+    // attempt to add shadows
+    // const pmremGenerator = new THREE.PMREMGenerator(renderer);
 
-    const scene = new THREE.Scene();
-    // scene.background = new THREE.Color( 0xbfe3dd );
-    scene.environment = pmremGenerator.fromScene(
-        new RoomEnvironment(),
-        1
-    ).texture;
+    // const scene = new THREE.Scene();
+    scene.background = new THREE.Color( 0xbfe3dd );
+    // scene.environment = pmremGenerator.fromScene(
+    //     new RoomEnvironment(),
+    //     1
+    // ).texture;
 
     // lightning and casting shadows
-    const light = new THREE.DirectionalLight(0x404040, 1); // soft white light
-    light.position.set(15, 20, 0);
-    light.target.position.set(0, 0, 0);
-    light.castShadow = true;
-
-    light.shadow.mapSize.width = 512; // default
-    light.shadow.mapSize.height = 512; // default
-    // light.shadowCameraLeft = -30;
+    // const light = new THREE.AmbientLight(0xFFFF00, 1); // soft white light
+    // // light.position.set(15, 20, 0);
+    // // light.target.position.set(0, 0, 0);
+    // light.castShadow = true;
+    //
+    // light.shadow.mapSize.width = 512; // default
+    // light.shadow.mapSize.height = 512; // default
+     // light.shadowCameraLeft = -30;
     // light.shadowCameraRight = 30;
     // light.shadowCameraTop = 35;
     // light.shadowCameraBottom = -30;
     scene.add(light);
-    scene.add(light.target);
+    // scene.add(light.target);
 
     // helpers
     const controls = new OrbitControls(camera, renderer.domElement); // allow users to view around the model
@@ -156,24 +168,26 @@ export default {
     };
     animate();
 
-    // setup loading page
-    // document.onreadystatechange = function () {
-    // 	var state = document.readyState
-    // 	if (state == 'interactive') {
-    // 		document.getElementById('threejsContainer').classList.add(hidden);
-    // 	}
-    // 	else if (state == 'complete') {
-    // 		setTimeout(function(){
-    // 			// document.getElementById('interactive');
-    // 			document.getElementById('loading').classList.add('hidden');
-    // 			document.getElementById('threejsContainer').classList.remove('hidden');
-    // 		},
-    // 		50);
-    // 	}
-    // };
+
   }
 };
 </script>
+
+// setup loading page
+// document.onreadystatechange = function () {
+// 	var state = document.readyState
+// 	if (state == 'interactive') {
+// 		document.getElementById('threejsContainer').classList.add(hidden);
+// 	}
+// 	else if (state == 'complete') {
+// 		setTimeout(function(){
+// 			// document.getElementById('interactive');
+// 			document.getElementById('loading').classList.add('hidden');
+// 			document.getElementById('threejsContainer').classList.remove('hidden');
+// 		},
+// 		50);
+// 	}
+// };
 
 
 <!--<template>-->
