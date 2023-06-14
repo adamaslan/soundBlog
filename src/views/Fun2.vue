@@ -143,7 +143,7 @@ export default {
     controls.rotateSpeed = 0.3; // set rotation speed of the mouse
 
     controls.autoRotate = true; // auto rotate
-    controls.autoRotateSpeed = 1.5; // 30 seconds per orbit when fps is 60
+    controls.autoRotateSpeed = 1; // 30 seconds per orbit when fps is 60
 
     // grid helper
     const gridHelper = new THREE.GridHelper(200, 50); // add a grid
@@ -157,8 +157,8 @@ export default {
 
       // cube.rotation.x += 0.01;
 
-      const width = window.innerWidth / 2;
-      const height = window.innerHeight / 2;
+      const width = window.innerWidth ;
+      const height = window.innerHeight ;
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
