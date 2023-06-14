@@ -66,7 +66,7 @@ export default {
           const model = gltf.scene;
 
           // position the model from the camera
-          model.position.set(0, 0, 6);
+          model.position.set(1, 1, 6);
           // model.scale.set(
           //     userPlatform(isInDesktop),
           //     userPlatform(isInDesktop),
