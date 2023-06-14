@@ -31,7 +31,7 @@ export default {
 
   mounted() {
     const scene = new THREE.Scene()
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
+    const camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 1000)
     const renderer = new THREE.WebGLRenderer()
     renderer.setSize(window.innerWidth, window.innerHeight)
     document.getElementById('three-container').appendChild(renderer.domElement)
@@ -66,7 +66,7 @@ export default {
           const model = gltf.scene;
 
           // position the model from the camera
-          model.position.set(1, 1, 6);
+          model.position.set(1, 1, 1);
           // model.scale.set(
           //     userPlatform(isInDesktop),
           //     userPlatform(isInDesktop),
@@ -146,7 +146,7 @@ export default {
     controls.autoRotateSpeed = 1; // 30 seconds per orbit when fps is 60
 
     // grid helper
-    const gridHelper = new THREE.GridHelper(200, 50); // add a grid
+    const gridHelper = new THREE.GridHelper(400, 50); // add a grid
     // light helper
     const helper = new THREE.DirectionalLightHelper(light, 5);
     // scene.add( gridHelper );
