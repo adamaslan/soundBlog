@@ -1,17 +1,7 @@
 <template>
   <div >
-<!--    div class="divCenter pt-20"-->
-    <!-- <div id="loading" class="divCenter w-full mt-[15rem] animate-spin"></div> -->
-    <div id="three-container">
-<!--        class=""-->
-<!--        :style="-->
-<!--        windowWidth < 1280-->
-<!--          ? null-->
-<!--          : {-->
-<!--              'padding-left': paddingValue - 50 + 'px',-->
-<!--              'padding-right': paddingValue - 50 + 'px'-->
-<!--            }-->
-<!--      "-->
+<div id="three-container">
+
      </div>
   </div>
 </template>
@@ -21,8 +11,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-// import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
-import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 
 /* eslint-enable */
 export default {
@@ -37,24 +25,7 @@ export default {
     renderer.setSize(window.innerWidth, window.innerHeight)
     document.getElementById('three-container').appendChild(renderer.domElement)
 
-    // let isInDesktop = window.innerWidth > 1148;
-    // const userPlatform = (platform) => {
-    //   return platform ? 5 : 3;
-    // };
 
-    //const scene = new THREE.Scene();
-    // const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-    // const camera = new THREE.PerspectiveCamera(75, 2, 0.1, 1000);
-    // camera.position.x = 30;
-    // camera.position.y = 20;
-    // camera.position.z = 30;
-    // const light = new THREE.DirectionalLight(0xffffff, 1)
-    // light.position.set(0, 0, 1)
-    // scene.add(light)
-
-    //loader
-    // const dracoLoader = new DRACOLoader();
-    // dracoLoader.setDecoderPath( 'js/libs/draco/gltf/' );
 
     const group = new THREE.Group();
  scene.add(group)
@@ -73,7 +44,7 @@ export default {
     group.add(light)
 
     const ambientLight = new THREE.AmbientLight('#b9d5ff', 0.3)
-   
+
     scene.add(ambientLight)
 
 
@@ -109,8 +80,7 @@ export default {
     loader.load(
         '/boompole.glb',
         function (gltf) {
-          // loader.load( './src/assets/room/scene.gltf', function ( gltf ) {
-          const model = gltf.scene;
+         const model = gltf.scene;
 
           // position the model from the camera
           model.position.set(1, 1, 1);
@@ -132,56 +102,11 @@ export default {
 
 
 
-    // const renderer = new THREE.WebGLRenderer();
-    // renderer.setSize( window.innerWidth, window.innerHeight );
 
-    // add to HTML viewer
-    // const container = document.body;
      const container = document.getElementById('threejs-container');
-    //container.appendChild( renderer.domElement ); // may need to change to append this on the right element
 
-    // three js renderer and size on the element
-    // const renderer = new THREE.WebGLRenderer({
-    //   antialias: true,
-    //   alpha: true
-    // });
-    // renderer.setSize(window.innerWidth, window.innerHeight)
-    // renderer.setPixelRatio(window.devicePixelRatio);
-    // renderer.setSize( window.innerWidth, window.innerHeight );
-    // renderer.outputEncoding = THREE.sRGBEncoding;
-    // renderer.setSize(450, 450 / 2); // size
-    // renderer.shadowMap.enabled = true;
-    // renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    // container.appendChild(renderer.domElement);
-    // renderer.setClearColor(0x000000, 0); // set transparent bg
-
-    // attempt to add shadows
-    // const pmremGenerator = new THREE.PMREMGenerator(renderer);
-
-    // const scene = new THREE.Scene();
      group.background = new THREE.Color( 0xbfe3dd );
-    // scene.environment = pmremGenerator.fromScene(
-    //     new RoomEnvironment(),
-    //     1
-    // ).texture;
-
-    // lightning and casting shadows
-    // const light = new THREE.AmbientLight(0xFFFF00, 1); // soft white light
-    // // light.position.set(15, 20, 0);
-    // // light.target.position.set(0, 0, 0);
-    // light.castShadow = true;
-    //
-    // light.shadow.mapSize.width = 512; // default
-    // light.shadow.mapSize.height = 512; // default
-     // light.shadowCameraLeft = -30;
-    // light.shadowCameraRight = 30;
-    // light.shadowCameraTop = 35;
-    // light.shadowCameraBottom = -30;
-
-
-    // group.add(light);
-    // scene.add(light.target);
-
+   
     // helpers
     const controls = new OrbitControls(camera, renderer.domElement); // allow users to view around the model
     // controls.enablePan = false;
