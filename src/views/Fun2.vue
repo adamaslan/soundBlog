@@ -31,13 +31,12 @@ export default {
 
   mounted() {
     const scene = new THREE.Scene()
+
     const camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 1000)
     const renderer = new THREE.WebGLRenderer()
     renderer.setSize(window.innerWidth, window.innerHeight)
     document.getElementById('three-container').appendChild(renderer.domElement)
-    const light = new THREE.DirectionalLight(0xffffff, 1)
-    light.position.set(0, 0, 1)
-    scene.add(light)
+
     // let isInDesktop = window.innerWidth > 1148;
     // const userPlatform = (platform) => {
     //   return platform ? 5 : 3;
@@ -57,6 +56,54 @@ export default {
     // const dracoLoader = new DRACOLoader();
     // dracoLoader.setDecoderPath( 'js/libs/draco/gltf/' );
 
+    const group = new THREE.Group();
+ scene.add(group)
+
+
+    const plane = new THREE.Mesh(
+        new THREE.PlaneGeometry( 10000, 10000 ),
+        new THREE.MeshBasicMaterial( { color: 0xffffff, opacity: 0.5, transparent: true } )
+    );
+    plane.position.y = 1;
+    plane.rotation.x = - Math.PI / 2;
+    group.add( plane );
+
+    const light = new THREE.DirectionalLight(0xffffff, 1)
+    light.position.set(0, 0, 1)
+    group.add(light)
+
+    const ambientLight = new THREE.AmbientLight('#b9d5ff', 0.3)
+   
+    scene.add(ambientLight)
+
+
+    // Bushes
+    const bushGeometry = new THREE.SphereGeometry(1, 16, 16)
+    const bushMaterial = new THREE.MeshStandardMaterial({ color: '#89c854' })
+
+    const bush1 = new THREE.Mesh(bushGeometry, bushMaterial)
+    bush1.castShadow = true
+    bush1.scale.set(0.5, 0.5, 0.5)
+    bush1.position.set(0.8, 0.2, 2.2)
+
+    const bush2 = new THREE.Mesh(bushGeometry, bushMaterial)
+    bush2.castShadow = true
+    bush2.scale.set(0.25, 0.25, 0.25)
+    bush2.position.set(1.4, 0.1, 2.1)
+
+    const bush3 = new THREE.Mesh(bushGeometry, bushMaterial)
+    bush3.castShadow = true
+    bush3.scale.set(0.4, 0.4, 0.4)
+    bush3.position.set(- 0.8, 0.1, 2.2)
+
+    const bush4 = new THREE.Mesh(bushGeometry, bushMaterial)
+    bush4.castShadow = true
+    bush4.scale.set(0.15, 0.15, 0.15)
+    bush4.position.set(- 1, 0.05, 2.6)
+
+    group.add(bush1, bush2, bush3, bush4)
+
+
     const loader = new GLTFLoader();
     // loader.setDRACOLoader( dracoLoader );
     loader.load(
@@ -73,7 +120,7 @@ export default {
           //     userPlatform(isInDesktop)
           // ); //model size
           model.castShadow = true;
-          scene.add(model);
+          group.add(model);
         },
         undefined,
         function (error) {
@@ -82,6 +129,8 @@ export default {
           this.$router.push('notfound');
         }
     );
+
+
 
     // const renderer = new THREE.WebGLRenderer();
     // renderer.setSize( window.innerWidth, window.innerHeight );
@@ -110,7 +159,7 @@ export default {
     // const pmremGenerator = new THREE.PMREMGenerator(renderer);
 
     // const scene = new THREE.Scene();
-    scene.background = new THREE.Color( 0xbfe3dd );
+     group.background = new THREE.Color( 0xbfe3dd );
     // scene.environment = pmremGenerator.fromScene(
     //     new RoomEnvironment(),
     //     1
@@ -128,7 +177,9 @@ export default {
     // light.shadowCameraRight = 30;
     // light.shadowCameraTop = 35;
     // light.shadowCameraBottom = -30;
-    scene.add(light);
+
+
+    // group.add(light);
     // scene.add(light.target);
 
     // helpers
