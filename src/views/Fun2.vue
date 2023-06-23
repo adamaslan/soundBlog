@@ -1,17 +1,7 @@
 <template>
   <div >
-<!--    div class="divCenter pt-20"-->
-    <!-- <div id="loading" class="divCenter w-full mt-[15rem] animate-spin"></div> -->
-    <div id="three-container">
-<!--        class=""-->
-<!--        :style="-->
-<!--        windowWidth < 1280-->
-<!--          ? null-->
-<!--          : {-->
-<!--              'padding-left': paddingValue - 50 + 'px',-->
-<!--              'padding-right': paddingValue - 50 + 'px'-->
-<!--            }-->
-<!--      "-->
+<div id="three-container">
+
      </div>
   </div>
 </template>
@@ -21,8 +11,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-// import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
-import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 
 /* eslint-enable */
 export default {
@@ -32,29 +20,21 @@ export default {
   mounted() {
     const scene = new THREE.Scene()
 
-    const camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 1000)
+    // const camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 1000)
+
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100)
+    camera.position.x = 4
+    camera.position.y = 2
+    camera.position.z = 15
+
+    scene.add(camera)
+
+
     const renderer = new THREE.WebGLRenderer()
     renderer.setSize(window.innerWidth, window.innerHeight)
     document.getElementById('three-container').appendChild(renderer.domElement)
 
-    // let isInDesktop = window.innerWidth > 1148;
-    // const userPlatform = (platform) => {
-    //   return platform ? 5 : 3;
-    // };
 
-    //const scene = new THREE.Scene();
-    // const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-    // const camera = new THREE.PerspectiveCamera(75, 2, 0.1, 1000);
-    // camera.position.x = 30;
-    // camera.position.y = 20;
-    // camera.position.z = 30;
-    // const light = new THREE.DirectionalLight(0xffffff, 1)
-    // light.position.set(0, 0, 1)
-    // scene.add(light)
-
-    //loader
-    // const dracoLoader = new DRACOLoader();
-    // dracoLoader.setDecoderPath( 'js/libs/draco/gltf/' );
 
     const group = new THREE.Group();
  scene.add(group)
@@ -72,8 +52,8 @@ export default {
     light.position.set(0, 0, 1)
     group.add(light)
 
-    const ambientLight = new THREE.AmbientLight('#b9d5ff', 0.3)
-   
+    const ambientLight = new THREE.AmbientLight('#b9d5ff', 0.9)
+
     scene.add(ambientLight)
 
 
@@ -84,24 +64,59 @@ export default {
     const bush1 = new THREE.Mesh(bushGeometry, bushMaterial)
     bush1.castShadow = true
     bush1.scale.set(0.5, 0.5, 0.5)
-    bush1.position.set(0.8, 0.2, 2.2)
+    bush1.position.set(0.8, -2.5, 2.2)
 
     const bush2 = new THREE.Mesh(bushGeometry, bushMaterial)
     bush2.castShadow = true
     bush2.scale.set(0.25, 0.25, 0.25)
-    bush2.position.set(1.4, 0.1, 2.1)
+    bush2.position.set(4, -4, 2.1)
 
     const bush3 = new THREE.Mesh(bushGeometry, bushMaterial)
     bush3.castShadow = true
     bush3.scale.set(0.4, 0.4, 0.4)
-    bush3.position.set(- 0.8, 0.1, 2.2)
+    bush3.position.set(- 0.8, -6, 2.2)
 
     const bush4 = new THREE.Mesh(bushGeometry, bushMaterial)
     bush4.castShadow = true
     bush4.scale.set(0.15, 0.15, 0.15)
-    bush4.position.set(- 1, 0.05, 2.6)
+    bush4.position.set(- 3, -5, 2.6)
 
     group.add(bush1, bush2, bush3, bush4)
+
+    const fog = new THREE.Fog('#262837', 1, 30)
+    scene.fog = fog
+
+    const graves = new THREE.Group()
+    scene.add(graves)
+    const graveGeometry = new THREE.BoxGeometry(0.6, 0.8, 0.1)
+
+    for(let i = 0; i < 50; i++)
+    {
+
+      const angle = Math.random() * Math.PI * 2 // Random angle
+      const radius = 3 + Math.random() * 6      // Random radius
+      const x = Math.cos(angle) * radius        // Get the x position using cosinus
+      const z = Math.sin(angle) * radius        // Get the z position using sinus
+
+      // Create a new material with a random color
+      const graveMaterial = new THREE.MeshStandardMaterial({ color: '#727272' })
+      const randomColor = THREE.MathUtils.randInt(0, 0xffffff)
+      graveMaterial.color.setHex(randomColor)
+
+      // Create the mesh
+      const grave = new THREE.Mesh(graveGeometry, graveMaterial)
+      grave.castShadow = true
+
+      // Position
+      grave.position.set(x, -2, z)
+
+      // Rotation
+      grave.rotation.z = (Math.random() - 0.5) * 0.4
+      grave.rotation.y = (Math.random() - 0.5) * 0.4
+
+      // Add to the graves container
+      graves.add(grave)
+    }
 
 
     const loader = new GLTFLoader();
@@ -109,11 +124,35 @@ export default {
     loader.load(
         '/boompole.glb',
         function (gltf) {
-          // loader.load( './src/assets/room/scene.gltf', function ( gltf ) {
+         const model = gltf.scene;
+
+          // position the model from the camera
+          model.position.set(1, 5, -9);
+          // model.scale.set(
+          //     userPlatform(isInDesktop),
+          //     userPlatform(isInDesktop),
+          //     userPlatform(isInDesktop)
+          // ); //model size
+          model.castShadow = true;
+          group.add(model);
+        },
+        undefined,
+        function (error) {
+          // console.error(error);
+          // comment this for debugging
+          this.$router.push('notfound');
+        }
+    );
+
+    const loader1 = new GLTFLoader();
+    // loader.setDRACOLoader( dracoLoader );
+    loader.load(
+        '/boompole.glb',
+        function (gltf) {
           const model = gltf.scene;
 
           // position the model from the camera
-          model.position.set(1, 1, 1);
+          model.position.set(-3, 3, -1);
           // model.scale.set(
           //     userPlatform(isInDesktop),
           //     userPlatform(isInDesktop),
@@ -132,56 +171,11 @@ export default {
 
 
 
-    // const renderer = new THREE.WebGLRenderer();
-    // renderer.setSize( window.innerWidth, window.innerHeight );
 
-    // add to HTML viewer
-    // const container = document.body;
-     const container = document.getElementById('threejs-container');
-    //container.appendChild( renderer.domElement ); // may need to change to append this on the right element
+    const container = document.getElementById('threejs-container');
 
-    // three js renderer and size on the element
-    // const renderer = new THREE.WebGLRenderer({
-    //   antialias: true,
-    //   alpha: true
-    // });
-    // renderer.setSize(window.innerWidth, window.innerHeight)
-    // renderer.setPixelRatio(window.devicePixelRatio);
-    // renderer.setSize( window.innerWidth, window.innerHeight );
-    // renderer.outputEncoding = THREE.sRGBEncoding;
-    // renderer.setSize(450, 450 / 2); // size
-    // renderer.shadowMap.enabled = true;
-    // renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    // container.appendChild(renderer.domElement);
-    // renderer.setClearColor(0x000000, 0); // set transparent bg
-
-    // attempt to add shadows
-    // const pmremGenerator = new THREE.PMREMGenerator(renderer);
-
-    // const scene = new THREE.Scene();
      group.background = new THREE.Color( 0xbfe3dd );
-    // scene.environment = pmremGenerator.fromScene(
-    //     new RoomEnvironment(),
-    //     1
-    // ).texture;
-
-    // lightning and casting shadows
-    // const light = new THREE.AmbientLight(0xFFFF00, 1); // soft white light
-    // // light.position.set(15, 20, 0);
-    // // light.target.position.set(0, 0, 0);
-    // light.castShadow = true;
-    //
-    // light.shadow.mapSize.width = 512; // default
-    // light.shadow.mapSize.height = 512; // default
-     // light.shadowCameraLeft = -30;
-    // light.shadowCameraRight = 30;
-    // light.shadowCameraTop = 35;
-    // light.shadowCameraBottom = -30;
-
-
-    // group.add(light);
-    // scene.add(light.target);
-
+   
     // helpers
     const controls = new OrbitControls(camera, renderer.domElement); // allow users to view around the model
     // controls.enablePan = false;
