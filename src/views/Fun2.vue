@@ -20,7 +20,16 @@ export default {
   mounted() {
     const scene = new THREE.Scene()
 
-    const camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 1000)
+    // const camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 1000)
+
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100)
+    camera.position.x = 4
+    camera.position.y = 2
+    camera.position.z = 15
+
+    scene.add(camera)
+
+
     const renderer = new THREE.WebGLRenderer()
     renderer.setSize(window.innerWidth, window.innerHeight)
     document.getElementById('three-container').appendChild(renderer.domElement)
@@ -43,7 +52,7 @@ export default {
     light.position.set(0, 0, 1)
     group.add(light)
 
-    const ambientLight = new THREE.AmbientLight('#b9d5ff', 0.3)
+    const ambientLight = new THREE.AmbientLight('#b9d5ff', 0.9)
 
     scene.add(ambientLight)
 
@@ -55,24 +64,59 @@ export default {
     const bush1 = new THREE.Mesh(bushGeometry, bushMaterial)
     bush1.castShadow = true
     bush1.scale.set(0.5, 0.5, 0.5)
-    bush1.position.set(0.8, 0.2, 2.2)
+    bush1.position.set(0.8, -2.5, 2.2)
 
     const bush2 = new THREE.Mesh(bushGeometry, bushMaterial)
     bush2.castShadow = true
     bush2.scale.set(0.25, 0.25, 0.25)
-    bush2.position.set(1.4, 0.1, 2.1)
+    bush2.position.set(4, -4, 2.1)
 
     const bush3 = new THREE.Mesh(bushGeometry, bushMaterial)
     bush3.castShadow = true
     bush3.scale.set(0.4, 0.4, 0.4)
-    bush3.position.set(- 0.8, 0.1, 2.2)
+    bush3.position.set(- 0.8, -6, 2.2)
 
     const bush4 = new THREE.Mesh(bushGeometry, bushMaterial)
     bush4.castShadow = true
     bush4.scale.set(0.15, 0.15, 0.15)
-    bush4.position.set(- 1, 0.05, 2.6)
+    bush4.position.set(- 3, -5, 2.6)
 
     group.add(bush1, bush2, bush3, bush4)
+
+    const fog = new THREE.Fog('#262837', 1, 30)
+    scene.fog = fog
+
+    const graves = new THREE.Group()
+    scene.add(graves)
+    const graveGeometry = new THREE.BoxGeometry(0.6, 0.8, 0.1)
+
+    for(let i = 0; i < 50; i++)
+    {
+
+      const angle = Math.random() * Math.PI * 2 // Random angle
+      const radius = 3 + Math.random() * 6      // Random radius
+      const x = Math.cos(angle) * radius        // Get the x position using cosinus
+      const z = Math.sin(angle) * radius        // Get the z position using sinus
+
+      // Create a new material with a random color
+      const graveMaterial = new THREE.MeshStandardMaterial({ color: '#727272' })
+      const randomColor = THREE.MathUtils.randInt(0, 0xffffff)
+      graveMaterial.color.setHex(randomColor)
+
+      // Create the mesh
+      const grave = new THREE.Mesh(graveGeometry, graveMaterial)
+      grave.castShadow = true
+
+      // Position
+      grave.position.set(x, -2, z)
+
+      // Rotation
+      grave.rotation.z = (Math.random() - 0.5) * 0.4
+      grave.rotation.y = (Math.random() - 0.5) * 0.4
+
+      // Add to the graves container
+      graves.add(grave)
+    }
 
 
     const loader = new GLTFLoader();
@@ -83,7 +127,32 @@ export default {
          const model = gltf.scene;
 
           // position the model from the camera
-          model.position.set(1, 1, 1);
+          model.position.set(1, 5, -9);
+          // model.scale.set(
+          //     userPlatform(isInDesktop),
+          //     userPlatform(isInDesktop),
+          //     userPlatform(isInDesktop)
+          // ); //model size
+          model.castShadow = true;
+          group.add(model);
+        },
+        undefined,
+        function (error) {
+          // console.error(error);
+          // comment this for debugging
+          this.$router.push('notfound');
+        }
+    );
+
+    const loader1 = new GLTFLoader();
+    // loader.setDRACOLoader( dracoLoader );
+    loader.load(
+        '/boompole.glb',
+        function (gltf) {
+          const model = gltf.scene;
+
+          // position the model from the camera
+          model.position.set(-3, 3, -1);
           // model.scale.set(
           //     userPlatform(isInDesktop),
           //     userPlatform(isInDesktop),
@@ -103,7 +172,7 @@ export default {
 
 
 
-     const container = document.getElementById('threejs-container');
+    const container = document.getElementById('threejs-container');
 
      group.background = new THREE.Color( 0xbfe3dd );
    
