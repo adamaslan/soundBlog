@@ -170,6 +170,31 @@ export default {
     );
 
 
+    const loader2 = new GLTFLoader();
+    // loader.setDRACOLoader( dracoLoader );
+    loader.load(
+        '/nycsoundguy.glb',
+        function (gltf) {
+          const model = gltf.scene;
+
+          // position the model from the camera
+          model.position.set(-3, 5, 1);
+          // model.scale.set(
+          //     userPlatform(isInDesktop),
+          //     userPlatform(isInDesktop),
+          //     userPlatform(isInDesktop)
+          // ); //model size
+          model.castShadow = true;
+          group.add(model);
+        },
+        undefined,
+        function (error) {
+          // console.error(error);
+          // comment this for debugging
+          this.$router.push('notfound');
+        }
+    );
+
 
 
     const container = document.getElementById('threejs-container');
