@@ -4,6 +4,7 @@ import About from '../views/About.vue'
 import PageNotFound from "../views/PageNotFound.vue";
 import Zaxcom from "../views/Zaxcom.vue";
 import Nova2 from "../views/Nova2.vue";
+import BrettAinslie from "../views/BrettAinslie.vue";
 import SoundDevices from "../views/SoundDevices.vue";
 import Ktek from "../views/Ktek.vue";
 import Contact from "../views/Contact.vue";
@@ -36,6 +37,11 @@ const routes = [
         path: '/nova2',
         name: "Nova2",
         component: Nova2,
+    },
+    {
+        path: '/brettainslie',
+        name: "BrettAinslie",
+        component: BrettAinslie,
     },
     {
         path: '/sounddevices',

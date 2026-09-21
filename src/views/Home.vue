@@ -32,6 +32,12 @@
                     <router-link to="/nova2" class="text-blue-500 hover:underline">Read more</router-link>
                 </div>
                 <div class="bg-white shadow-lg rounded-lg p-4">
+                    <img src="/brett-ainslie.jpg" alt="Brett Ainslie, NYC production sound mixer" class="w-full h-96 object-contain rounded-t-lg">
+                    <h3 class="text-lg font-bold mt-2">Meet Brett Ainslie</h3>
+                    <p class="text-gray-600 text-sm">A NYC sound mixer on how he got into sound, his gear and favorite shoots.</p>
+                    <router-link to="/brettainslie" class="text-blue-500 hover:underline">Read more</router-link>
+                </div>
+                <div class="bg-white shadow-lg rounded-lg p-4">
                     <img src="/sound2.jpeg" alt="sound person image from open source" class="w-full h-96 object-contain rounded-t-lg">
                     <h3 class="text-lg font-bold mt-2">Sound Devices</h3>
                     <p class="text-gray-600 text-sm">Sound Devices builds sturdy mixers and recorders</p>
