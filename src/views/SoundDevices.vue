@@ -12,6 +12,10 @@
         <p class="text-left text-lg tracking-tight sm:text-lg lg:text-xl font-serif font-bold"></p>
         <br />
         <p class="text-left text-lg tracking-tight sm:text-lg lg:text-xl font-serif font-bold">
+            Sound Devices is known for compact, rugged mixers and recorders that hold up to the daily wear of location work, from rain and heat to being carried through a full day of shooting. Many mixers use their recorders on documentaries, commercials and narrative films, and the clean preamps and straightforward layout make the gear easy to trust and quick to set up when the crew is moving fast.
+        </p>
+        <br />
+        <p class="text-left text-lg tracking-tight sm:text-lg lg:text-xl font-serif font-bold">
             To visit NYC Sound Guy
         </p>
 

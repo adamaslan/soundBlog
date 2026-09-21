@@ -11,6 +11,10 @@
         <p class="text-left text-lg tracking-tight sm:text-lg lg:text-xl font-serif font-bold"></p>
         <br />
         <p class="text-left text-lg tracking-tight sm:text-lg lg:text-xl font-serif font-bold">
+            Zaxcom is best known for pairing its recorders and mixers with wireless transmitters that can also record audio internally, so a backup of a take can exist even if the wireless signal drops out. Its products share a remote control system called ZaxNet, which lets a mixer adjust supported transmitters without walking onto set. On crowded New York streets, where the airwaves are packed, that kind of safety net is a big reason many of us trust the brand.
+        </p>
+        <br />
+        <p class="text-left text-lg tracking-tight sm:text-lg lg:text-xl font-serif font-bold">
             To visit NYC Sound Guy
         </p>
 
