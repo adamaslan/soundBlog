@@ -29,6 +29,11 @@
         </p>
         <br />
         <p class="text-left text-lg tracking-tight sm:text-lg lg:text-xl font-serif font-bold">
+            Read more from Brett on
+            <a href="https://www.brettainsliesound.com/blog" class="text-blue-500" target="_blank" rel="noopener noreferrer">his blog</a>.
+        </p>
+        <br />
+        <p class="text-left text-lg tracking-tight sm:text-lg lg:text-xl font-serif font-bold">
             Read more about the gear on our
             <router-link to="/sounddevices" class="text-blue-500">Sound Devices</router-link> page.
         </p>
