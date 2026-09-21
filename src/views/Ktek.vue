@@ -10,6 +10,10 @@
         <p class="text-left text-lg tracking-tight sm:text-lg lg:text-xl font-serif font-bold"></p>
         <br />
         <p class="text-left text-lg tracking-tight sm:text-lg lg:text-xl font-serif font-bold">
+            A good boom pole is one of the most important tools a boom operator carries. Ktek makes lightweight carbon fiber poles designed to be held overhead for long takes without tiring the operator, and they come in a range of lengths for different shots and spaces. Whether you are working in a tight New York apartment or on an open street, the right pole makes it easier to keep the microphone close to the actors and out of the frame.
+        </p>
+        <br />
+        <p class="text-left text-lg tracking-tight sm:text-lg lg:text-xl font-serif font-bold">
             To visit NYC Sound Guy
         </p>
 
