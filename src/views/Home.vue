@@ -26,6 +26,12 @@
 
                 </div>
                 <div class="bg-white shadow-lg rounded-lg p-4">
+                    <img src="/nova2.png" alt="Zaxcom Nova 2 mixer and recorder" class="w-full h-96 object-contain rounded-t-lg">
+                    <h3 class="text-lg font-bold mt-2">Zaxcom Nova 2</h3>
+                    <p class="text-gray-600 text-sm">A mixer, recorder and two receivers in one sub 4 lb device.</p>
+                    <router-link to="/nova2" class="text-blue-500 hover:underline">Read more</router-link>
+                </div>
+                <div class="bg-white shadow-lg rounded-lg p-4">
                     <img src="/sound2.jpeg" alt="sound person image from open source" class="w-full h-96 object-contain rounded-t-lg">
                     <h3 class="text-lg font-bold mt-2">Sound Devices</h3>
                     <p class="text-gray-600 text-sm">Sound Devices builds sturdy mixers and recorders</p>

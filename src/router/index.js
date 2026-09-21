@@ -3,6 +3,7 @@ import Home from '../views/Home.vue'
 import About from '../views/About.vue'
 import PageNotFound from "../views/PageNotFound.vue";
 import Zaxcom from "../views/Zaxcom.vue";
+import Nova2 from "../views/Nova2.vue";
 import SoundDevices from "../views/SoundDevices.vue";
 import Ktek from "../views/Ktek.vue";
 import Contact from "../views/Contact.vue";
@@ -30,6 +31,11 @@ const routes = [
         path: '/zaxcom',
         name: "Zaxcom",
         component: Zaxcom,
+    },
+    {
+        path: '/nova2',
+        name: "Nova2",
+        component: Nova2,
     },
     {
         path: '/sounddevices',
